@@ -13,9 +13,8 @@
   $('input[type="text"]').blur(function(){
     $(this).removeClass('focusField');
   });
-
+  var albumId;
   var origin = window.location.origin;
-
 //---- Show Forms
 
   function showArtistForm(){
@@ -201,40 +200,45 @@
   function displayAlbums(data){
     $('#mainArea').empty();
     for(var i = 0; i < data.albums.length; i++){
+      
       displayAlbum(data.albums[i]);
     }
   }
 
   function displaySong(song){
-    console.log(song);
-    var $tr = $('<tr>');
-    var $title = $('<td>').text(song.name);
-    var $artist = $('<td>').text(song.artist);
-    var $album = $('<td>').text(song.album);
+    var $tr = $('<tr>').addClass('tRow');
+    var $title = $('<td>').addClass('td').text(song.name);
+    var $artist = $('<td>').addClass('td').text(song.artist);
+    var $album = $('<td>').addClass('td').text(song.album);
 
-    $tr.append($album, $artist, $title);
+    $tr.append($title, $artist, $album);
     $('#songBody').append($tr);
   }
   
   function displaySongs(data){
     console.log(data);
     $('#mainArea').empty();
-    var $table = $('<table>');
-    var $thead = $('<thead>');
+    var $containDiv = $('<div>').addClass('songTable');
+    var $table = $('<table>').addClass('songTable');
+    var $thead = $('<thead>').addClass('tHead');
     var $tbody = $('<tbody>').attr('id','songBody');
     var $tr = $('<tr>');
     var $th1 = $('<th>').text('Song Title');
     var $th2 = $('<th>').text('Artist');
     var $th3 = $('<th>').text('Album');
-    
-    $('#mainArea').append($table.append($thead.append($tr.append($th1, $th2, $th3)), $tbody));
-    if(data.albums){
-      for(var i = 0; i < data.albums.length; i++){
-        displaySong(data.albums[i]);
+    var $tfoot = $('<tfoot>').addClass('tFoot');
+    $tfoot.append($tr);
+    $table.append($thead.append($tr.append($th1, $th2, $th3)), $tbody);
+    $table.append($tfoot);
+    $containDiv.append($table);
+    $('#mainArea').append($containDiv);
+    if(data.songs){
+      for(var i = 0; i < data.songs.length; i++){
+        displaySong(data.songs[i]);
       }
     }else{
-      for(var j = 0; j < data.songs.length; j++){
-        displaySong(data.songs[j]);
+      for(var j = 0; j < data.albums.length; j++){
+        displayAlbum(data.albums[j]);
       }
     }
   }
@@ -271,9 +275,19 @@
   }
 
   function filterAlbum(){
+    $('#mainArea').empty();
+    albumId = this.dataset.albumId;
     var artist = $(this).children('div:nth-child(4)').text();
     var url = origin + '/albums/filter?type=artist&which='+ artist;
     $.getJSON(url, displaySongs);
   }
+        
+//  function individualizeAlbum(data){
+//    var songs = $.map(data, function(value, index){return [value];});
+//    var song = _.filter(songs, function(albumId){return albumId;});
+//    debugger;
+//    console.log(song);
+     //displaySongs
+//  }
 
 })();
