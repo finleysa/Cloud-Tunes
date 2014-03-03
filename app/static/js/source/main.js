@@ -62,8 +62,8 @@
     $('#mainArea').on('click', '.photo', filterArtist);
     $('#mainArea').on('click', '.albumPhoto', filterAlbum);
     //file = instance.listenOnSubmit(document.getElementById('saveSong'), document.getElementById('inputFile'));
-    //showAlbums();
-    //showArtists();
+    showAlbums();
+    showArtists();
   }
 
   /////////SHOW FUNCTIONS////////
@@ -93,7 +93,6 @@
     }
     var url = origin + '/artists';
     var data = $('#submitArtist').serialize();
-    console.log('lookin' + data);
     var type = 'POST';
     var success = newArtist;
     $.ajax({url:url, type:type, data:data, success:success});
@@ -101,7 +100,6 @@
   }
 
   function newArtist(artist){
-    console.log(artist);
     $('#submitArtist')[0].reset();
     displayArtist(artist);
   }
@@ -127,13 +125,7 @@
   }
   /*
   function addSong(err){
-    var url =  origin + '/songs';
-    var data = $('#submitSong').serialize();
-    var type = 'POST';
-    var success = newSong;
-    console.log(data);
-    console.log(url);
-    $.ajax({url:url, type:type, data:data, success:success});
+    //showSongs();
     event.preventDefault(err);
   }
   function newSong(song){
@@ -142,7 +134,6 @@
     displaySong(song);
   }
 */
-
   ////////DISPLAY FUNCTIONS////////
   //displays one artist at a time on the to the #mainArea
   function displayArtist(artist){
@@ -215,12 +206,13 @@
   }
 
   function displaySong(song){
+    console.log(song);
     var $tr = $('<tr>');
     var $title = $('<td>').text(song.name);
     var $artist = $('<td>').text(song.artist);
     var $album = $('<td>').text(song.album);
 
-    $tr.append($title, $artist, $album);
+    $tr.append($album, $artist, $title);
     $('#songBody').append($tr);
   }
   
@@ -236,10 +228,14 @@
     var $th3 = $('<th>').text('Album');
     
     $('#mainArea').append($table.append($thead.append($tr.append($th1, $th2, $th3)), $tbody));
-
-    console.log(data.songs);
-    for(var i = 0; i < data.songs.length; i++){
-      displaySong(data.songs[i]);
+    if(data.albums){
+      for(var i = 0; i < data.albums.length; i++){
+        displaySong(data.albums[i]);
+      }
+    }else{
+      for(var j = 0; j < data.songs.length; j++){
+        displaySong(data.songs[j]);
+      }
     }
   }
   ////////END DISPLAY FUNCTIONS////////
@@ -270,17 +266,13 @@
   //////////FILTERS/////////
   function filterArtist(){
     var artist = $(this).children('.footer').text();
-    console.log(artist);
     var url = origin + '/albums/filter?type=artist&which='+ artist;
-    console.log(url);
     $.getJSON(url, displayAlbums);
   }
 
   function filterAlbum(){
-    var album = $(this).children('div:nth-child(1)').text();
-    console.log(album);
-    var url = origin + '/albums/filter?type=name&which='+ album;
-    console.log(url);
+    var artist = $(this).children('div:nth-child(4)').text();
+    var url = origin + '/albums/filter?type=artist&which='+ artist;
     $.getJSON(url, displaySongs);
   }
 

@@ -107,9 +107,7 @@ form .button:hover{
 }
 
 #artistName, #artistPhoto, #albumName, #albumYear, #albumPhoto, #artistSelect, .selectArtist, #inputSong, #album{
-  filter: alpha(opacity=50); /* IE */
-  -moz-opacity: 0.6; /* Mozilla */
-  opacity: 7.6; /* CSS3 */
+  box-shadow: @box-shadow;
 }
 #artistName, #artistPhoto, #albumName, #albumYear, #albumPhoto, #artistSelect, .selectArtist, #inputSong, #album:hover{
 }
@@ -262,7 +260,7 @@ td.td{
   background: @color4;
 }
 
-td:hover{
+td.td:hover{
   background: @color2;
   color: @color4;
   text-shadow: 2px 2px @color3;
