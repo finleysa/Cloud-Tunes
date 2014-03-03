@@ -1,0 +1,53 @@
+doctype html
+html(class='no-js', lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title= title
+    link(rel='stylesheet', href='/css/normalize.css')
+    link(rel='stylesheet', href='/css/foundation.css')
+    link(rel='stylesheet', href='/less/app.css')
+    script(src='/js/vendor/modernizr.js')
+  body
+
+    #container
+      .row
+        .small-12.columns
+            h1 MochaCast - audioTEST
+            button.back.tiny Back
+            button.playPause Play
+            button.next.tiny Next
+            button.repeat Repeat
+            #time
+      .row
+        .small-12.columns
+           #seekbar.seek-bar
+              #playbar.play-bar
+      .row
+        .small-12.columns
+            #playlist
+
+          //Not Needed!
+      .row
+        .small-12.columns
+            button.archer.tiny Archer
+            button.million.tiny Million
+      .row
+        .small-12.columns
+          #body
+
+             // jPlayer - add this!
+            #jquery_jplayer_1.jp-jplayer
+              #jp_container_1.jp-audio
+
+
+    script(src='/js/vendor/jquery.js')
+    script(src='/js/vendor/foundation.js')
+    script(src='/js/vendor/lodash.js')
+    script(src='/js/vendor/moment.js')
+
+        //jPlayer - add this!
+    script(src='/js/vendor/jquery.jplayer.min.js')
+    script(src='/js/vendor/drag.js')
+
+    script(src='/js/source/main.js')

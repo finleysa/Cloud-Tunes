@@ -1,0 +1,173 @@
+doctype html
+html(class='no-js', lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title= title
+    link(rel='stylesheet', href='/css/normalize.css')
+    link(rel='stylesheet', href='/css/foundation.css')
+    link(rel='stylesheet', href='/less/app.css')
+    link(rel='stylesheet', href='/less/player.css')
+    script(src='/js/vendor/modernizr.js')
+  body
+    #container
+      .row
+        .small-4.columns
+          .header
+            h1 MochaCast
+            h5 "I'm in your data." - Prince
+        .small-8.columns
+            button.back.tiny Back
+            button.playPause Play
+            button.next.tiny Next
+            button.repeat Repeat
+            #time
+          .row
+            .small-12.columns
+               #seekbar.seek-bar
+                  #playbar.play-bar
+          .row
+            .small-12.columns
+                button.archer.tiny Archer
+                button.million.tiny Million
+      #nav
+        .row
+          .small-9.columns
+            .button-bar
+              ul.button-group.round
+                li: a#addArtist.button.tiny Add Artist
+                li: a#addAlbum.button.tiny Add Album
+                li: a#addSong.button.tiny Add Song
+                li: a#showArtists.button.tiny Show Artists
+                li: a#showAlbums.button.tiny Show Albums
+                li: a#showSongs.button.tiny Show Songs
+          .small-3.columns
+            form#search
+              .row.collapse
+                .small-3.columns
+                  select#selectSearch.button.prefix.tiny
+                    option Select
+                    option(value='artist') Artist
+                    option(value='album') Album
+                    option(value='song') Song
+                .small-6.columns
+                  input#search.right(type= 'text', placeholder='Search', autofocus=true)
+                .small-3.columns
+                  a#searchbtn.button.postfix.tiny Search
+
+      #formArea
+        .row
+          .small-6.columns
+              form#submitArtist
+                fieldset
+                  .row
+                    .small-12.columns
+                      label Artist name
+                        input#artistName(type='text', name='name', placeholder='Artist')
+                  .row
+                    .small-6.columns
+                      label Artist photo
+                        input#artistPhoto(name='photo', type='text', placeholder='Url')
+                        input#artistId(name='_id', type='hidden')
+                    .small-6.columns
+                      a#saveArtist.button.tiny.round Save Artist
+        .row
+          .small-6.columns
+              form#submitAlbum
+                fieldset
+                  .row
+                    .small-8.columns
+                      label Album name
+                        input#albumName(type='text', name='name', placeholder='Album Title')
+                    .small-4.columns
+                      label Album year
+                        input#albumYear(type='text', name='year', placeholder='Year')
+                  .row
+                    .small-4.columns
+                      label Album art
+                        input#albumPhoto(name='cover', type='text', placeholder='Url...')
+                        input#albumId(name='_id', type='hidden')
+                    .small-4.columns
+                      label Select artist
+                        select.artist#artistSelect(name='artist')
+                          option(value='Select Artist', disabled) Select Artist
+                    .small-4.columns
+                      a#saveAlbum.button.tiny.round Save Album
+        .row
+          .small-6.columns
+              form#submitSong(action='/songs', method='post', enctype='multipart/form-data')
+                fieldset
+                  .row
+                    .small-12.columns
+                      label Song title
+                        input#inputSong(type='text', name='name', placeholder='Song Title')
+                  .row
+                    .small-3.columns
+                      label Select artist
+                        select#artistSelect.artist.selectArtist(name='artist')
+                          option(value='Select Artist', disabled) Select artist
+                    .small-3.columns.left
+                      label Select ablum
+                        select#album.selectAlbum(name='album')
+                          option(value='Select Album', disabled) Select album
+                    .small-3.columns
+                      label Upload mp3
+                        input#inputFile(name='file', type='file')
+                    .small-3.columns.left
+                      button#saveSong.button.tiny.round Save song
+
+        .row
+          .small-12.columns
+            #mainArea
+              .row
+                .small-12.columns
+                  div.songTable
+                    table.songTable
+                      thead.tHead
+                        tr.tRow
+                          th.thSong Song title
+                          th.thArtist Artist
+                          th.thAlbum Album
+                      tbody.songBody
+                        tr.tRow
+                          td.td All Up
+                          td.td Prince
+                          td.td In Yo Data
+                        tr.tRow
+                          td.td All Up
+                          td.td Prince
+                          td.td In Yo Data
+                        tr.tRow
+                          td.td All Up
+                          td.td Prince
+                          td.td In Yo Data
+<<<<<<< HEAD
+<<<<<<< HEAD
+                      tfoot.tFoot
+                        tr
+                          td
+                          td
+                          td
+
+=======
+        .row
+          .small-12.columns
+            #jquery_jplayer_1.jp-jplayer
+              #jp_container_1.jp-audio
+>>>>>>> 4c5201e93ab585ce8cca051c7ec02c8649664865
+
+=======
+        .row
+          .small-12.columns
+            #jquery_jplayer_1.jp-jplayer
+              #jp_container_1.jp-audio
+>>>>>>> 4c5201e93ab585ce8cca051c7ec02c8649664865
+
+        script(src='/js/vendor/jquery.js')
+        script(src='/js/vendor/foundation.js')
+        script(src='/js/vendor/lodash.js')
+        script(src='/js/vendor/moment.js')
+        script(src='/js/vendor/jquery.jplayer.min.js')
+        script(src='/js/vendor/drag.js')
+        script(src='/js/source/main.js')
+        script(src='/js/source/playerApp.js')
