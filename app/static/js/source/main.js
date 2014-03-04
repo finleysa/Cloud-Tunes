@@ -1,3 +1,4 @@
+/* jshint unused:false */
 
 (function(){
 
@@ -15,6 +16,11 @@
   });
   var albumId;
   var origin = window.location.origin;
+  $('.playPause').click(playPause);
+  $('.next').click(next);
+  $('.back').click(back);
+  $('.repeat').click(toggleRepeat);
+  player();
 //---- Show Forms
 
   function showArtistForm(){
@@ -60,9 +66,11 @@
     $('#mainArea').on('click', '.editingAlbum', addAlbum);
     $('#mainArea').on('click', '.photo', filterArtist);
     $('#mainArea').on('click', '.albumPhoto', filterAlbum);
+    $('#mainArea').on('click', '.tNow', playNew);
     //file = instance.listenOnSubmit(document.getElementById('saveSong'), document.getElementById('inputFile'));
     showAlbums();
     showArtists();
+    $('.repeat').css('background-color', 'grey');
   }
 
   /////////SHOW FUNCTIONS////////
@@ -196,26 +204,30 @@
     $photo.append($header, $edit, $year, $artist);
     $('#mainArea').prepend($photo);
   }
-  
+
   function displayAlbums(data){
     $('#mainArea').empty();
     for(var i = 0; i < data.albums.length; i++){
-      
       displayAlbum(data.albums[i]);
     }
   }
 
   function displaySong(song){
     var $tr = $('<tr>').addClass('tRow');
-    var $title = $('<td>').addClass('td').text(song.name);
-    var $artist = $('<td>').addClass('td').text(song.artist);
-    var $album = $('<td>').addClass('td').text(song.album);
+    var $title = $('<td>').addClass('td title').text(song.name);
+    var $artist = $('<td>').addClass('td artist').text(song.artist);
+    var $album = $('<td>').addClass('td album').text(song.album);
+    var $tNow = $('<button>').addClass('tNow tiny').text('Play Now!');
+    $title.attr('data-file', song.file);
+    $title.append($tNow);
+    console.log(song);
 
     $tr.append($title, $artist, $album);
     $('#songBody').append($tr);
   }
-  
+
   function displaySongs(data){
+    debugger;
     console.log(data);
     $('#mainArea').empty();
     var $containDiv = $('<div>').addClass('songTable');
@@ -289,5 +301,151 @@
 //    console.log(song);
      //displaySongs
 //  }
+//
+//
+
+
+  ////////GLOBALS//////////
+  var time;
+  var paused;
+  var repeat = false;
+  var playlist = [];
+  var playlistNames = [];
+  var position = 0;
+  var max = 0;
+
+
+  ////////JPLAYER ////////
+  function player(){
+    $('#jquery_jplayer_1').jPlayer({
+      ready: function () {
+        console.log('Ready!');
+      },
+      ended: function (event) {
+        next();
+      },
+      swfPath: 'swf',
+      supplied: 'mp3',
+      cssSelector: {
+        seekBar: '.seek-bar',
+        playBar: '.play-bar'
+      }
+    });
+
+    $('#jquery_jplayer_1').bind($.jPlayer.event.timeupdate, function(event) {
+        time = event.jPlayer.status.currentTime;
+        $('#time').text(Math.floor(time));
+      });
+  }
+
+
+  ////////CONTROLS ////////
+  function playPause(){
+    paused = $('#jquery_jplayer_1').data().jPlayer.status.paused;
+    if(paused===true){
+      $('#jquery_jplayer_1').jPlayer('play', time);
+      //css set to play
+    }
+    else if(paused===false){
+      $('#jquery_jplayer_1').jPlayer('pause', time);
+      //css set to pause
+    }
+  }
+
+  function playNew(){
+    var file = $($(this)[0].parentNode).attr('data-file');
+    $('#jquery_jplayer_1').jPlayer('setMedia', {mp3: origin+file}).jPlayer('play');
+    playlistAdd(file);
+  }
+
+  function next(){
+    console.log('next!');
+    event.preventDefault();
+    if(position < max){
+      position += 1;
+      playNew(playlist[position]);
+    }
+    else if(repeat===true){
+      position = 0;
+      playNew(playlist[position]);
+    }
+  }
+
+  function back(){
+    console.log('back!');
+    event.preventDefault();
+    if(position > 0){
+      position -= 1;
+      playNew(playlist[position]);
+    }
+    else if(repeat===true){
+      position = max;
+      playNew(playlist[position]);
+    }
+  }
+
+
+  ////////PLAYLIST////////
+  function addToPlaylist(){
+    var file = $($(this)[0].parentNode).attr('data-file');
+    playlist.push(file);
+    playlistNames.push(file);
+    updatePlaylistText();
+    if(playlist.length===1){
+      playNew(playlist[0]);
+      max = 0;
+    }
+    else{
+      max++;
+    }
+  }
+
+  //called by playNew()
+  function playlistAdd(file){
+    playlist.push(file);
+    playlistNames.push(file);
+    updatePlaylistText();
+    if(playlist.length===1){
+      playNew(playlist[0]);
+      max = 0;
+    }
+    else{
+      max++;
+    }
+  }
+
+  function updatePlaylistText(){
+    $('#playlist').text(playlist);
+  }
+
+  function toggleRepeat(){
+    if(repeat===true){$('.repeat').css('background-color', 'grey');}
+    else if(repeat===false){$('.repeat').css('background-color', '#008cba');}
+    repeat = !repeat;
+  }
+
+  //Plan B for audio player
+  //loads one audio file onto page
+  //src = orgin + /audios/ + filename
+/*
+  function loadMusic(){
+    console.log('Loading!');
+    var url = origin + '/audios/archer.mp3';
+    var $song = ('<audio class="staging" preload="auto" autobuffer="auto" controls="controls">');
+    var $source = ('<source src="'+url+'">');
+    console.log($song);
+    console.log($source);
+    $('#body').append($song);
+    $('.staging').append($source);
+    $('.staging').removeClass('staging');
+    event.preventDefault();
+  }
+
+  //for dev purposes, can be removed
+  setInterval(function(){
+      paused = $('#jquery_jplayer_1').data().jPlayer.status.paused;
+      console.log('Is Paused: ' + paused);
+    }, 1000);
+*/
 
 })();

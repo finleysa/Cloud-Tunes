@@ -20,16 +20,12 @@ html(class='no-js', lang='en')
             button.back.tiny Back
             button.playPause Play
             button.next.tiny Next
-            button.repeat Repeat
+            button.repeat.tiny Repeat
             #time
           .row
             .small-12.columns
                #seekbar.seek-bar
                   #playbar.play-bar
-          .row
-            .small-12.columns
-                button.archer.tiny Archer
-                button.million.tiny Million
       #nav
         .row
           .small-9.columns
@@ -125,7 +121,7 @@ html(class='no-js', lang='en')
                     table.songTable
                       thead.tHead
                         tr.tRow
-                          th.thSong Song 
+                          th.thSong Song
                           th.thArtist Artist
                           th.thAlbum Album
                       tbody.songBody
@@ -152,11 +148,6 @@ html(class='no-js', lang='en')
             #jquery_jplayer_1.jp-jplayer
               #jp_container_1.jp-audio
 
-        .row
-          .small-12.columns
-            #jquery_jplayer_1.jp-jplayer
-              #jp_container_1.jp-audio
-
         script(src='/js/vendor/jquery.js')
         script(src='/js/vendor/foundation.js')
         script(src='/js/vendor/lodash.js')
@@ -164,4 +155,4 @@ html(class='no-js', lang='en')
         script(src='/js/vendor/jquery.jplayer.min.js')
         script(src='/js/vendor/drag.js')
         script(src='/js/source/main.js')
-        script(src='/js/source/playerApp.js')
+        //script(src='/js/source/playerApp.js')
